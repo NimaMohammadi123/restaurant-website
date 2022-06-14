@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block content %}
+   <div style="text-align:center">
+     <img src="{{food.photo.url}}" width="50%" style="margin-top: 100px;">
+     <hr style=" border-width: 5px;"/>
+     {{food.name}}
+     <hr style=" border-width: 5px;"/>
+     {{food.description}}
+     <hr style=" border-width: 5px;"/>
+     {{food.price}} تومان
+     <hr style=" border-width: 5px;"/>
+     <form action="{% url 'cart:cart_add' food.id %}" method="POST">
+      <input type="submit" value="add to cart">
+      {{form.as_p}}
+      {% csrf_token %}
+     </form>
+
+   </div>
+
+{% endblock content %}
+

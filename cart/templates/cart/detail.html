@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>shop cart</h1>
+
+<table class="table table-striped" style="margin-top: 100px;">
+    <tr>
+        <th scope="col">image</th>
+        <th scope="col">name</th>
+        <th scope="col">quantity</th>
+        <th scope="col">remove</th>
+        <th scope="col">price</th>
+        <th scope="col">total price</th>
+    </tr>
+    <tbody>
+        {% for item in cart %}
+          {% with food=item.food %}
+            <tr>
+                <td><a href="{% url 'foods:food_detail' food.id %}"><img src="{{food.photo.url}}" height="100px" width="150px"></a></td>
+                <td>{{food.name}}</td>
+                <td>
+                    <form action="{% url 'cart:cart_add' food.id %}" method="POST">
+                        {% csrf_token %}
+                        {{item.update_form.quantity}}
+                        {{item.update_form.override}}
+                        <input type="submit" value="update">
+                    </form>
+                </td>
+                <td>
+                    <form action="{% url 'cart:cart_remove' food.id %}" method="POST">
+                        {% csrf_token %}
+                        <input type="submit" value="remove">
+                    </form>
+                </td>
+                <td>{{item.price}}</td>
+                <td>{{item.total_price}}</td>
+            </tr>
+          {% endwith %}
+        {% endfor %}
+        <tr>
+            <td>total price</td>
+            <td colspan="4"></td>
+            <td>{{cart.get_total_price}}</td>
+        </tr>
+    </tbody>
+</table>
+<p>
+    <a href="{% url 'foods:food_list'%}" style="background-color: rgb(72, 255, 72);">continue buy</a>
+</p>
+{% endblock content %}
